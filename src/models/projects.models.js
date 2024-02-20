@@ -1,5 +1,5 @@
-const { DataTypes, Sequelize } = require("sequelize");
-const { default: db } = require("../utils/database");
+import DataTypes from "sequelize";
+import db from "../utils/database.js";
 
 const Projects = db.define("projects", {
   id: {
@@ -29,9 +29,8 @@ const Projects = db.define("projects", {
     type: DataTypes.INTEGER,
   },
   customerId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+    type: DataTypes.UUID,
   },
 });
 
-module.exports = Projects;
+export default Projects;

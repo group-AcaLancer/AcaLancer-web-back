@@ -1,5 +1,7 @@
-const { DataTypes } = require("sequelize");
-const { default: db } = require("../utils/database");
+import DataTypes from "sequelize";
+import db from "../utils/database.js";
+import bcrypt from "bcrypt";
+import sendWelcomeEmail from "../helpers/sendMail.js";
 
 const Users = db.define("users", {
   id: {
@@ -20,7 +22,6 @@ const Users = db.define("users", {
   },
   email: {
     type: DataTypes.STRING(50),
-    unique: true,
     allowNull: false,
   },
   password: {
@@ -31,7 +32,7 @@ const Users = db.define("users", {
     type: DataTypes.BOOLEAN,
   },
   role: {
-    type: DataTypes.ENUM("admin", "user"),
+    type: DataTypes.ENUM("user", "admin"),
   },
   decription: {
     type: DataTypes.STRING(100),
@@ -47,15 +48,21 @@ const Users = db.define("users", {
   country: {
     type: DataTypes.STRING(20),
     allowNull: false,
+  }
+},
+{
+  modelName: 'Users',
+  hooks: {
+    beforeCreate: async (user, options) => {
+      const hashed = await bcrypt.hash(user.password, 10);
+      user.password = hashed;
+    },
+    afterCreate: async (user, options) => {
+      const { email, firstname, lastname } = user;
+      sendWelcomeEmail(email, {firstname, lastname});
+    },
   },
-  createdAt: {
-    type: DataTypes.DATEONLY,
-    defaultValue: DataTypes.NOW,
-  },
-  updateAt: {
-    type: DataTypes.DATEONLY,
-    defaultValue: DataTypes.NOW,
-  },
-});
+},
+);
 
-module.exports = Users;
+export default Users;
