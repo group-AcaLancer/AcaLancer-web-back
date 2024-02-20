@@ -6,30 +6,31 @@ const Projects = db.define("projects", {
     type: DataTypes.UUID,
     primaryKey: true,
   },
-  merchantId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: "Projects",
-      key: "id",
-    },
-  },
-  name: {
+  imgLogo: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  price: {
-    type: DataTypes.DECIMAL,
-    validate: {
-      min: 0,
-    },
+  name: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
   },
-  status: {
-    type: DataTypes.ENUM,
-    values: ["active", "banned", "inactive", "deleted"],
+  url: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  createdAt: {
-    type: DataTypes.DATEONLY,
-    defaultValue: Sequelize.NOW,
+  description: {
+    type: DataTypes.STRING(200),
+  },
+  workers: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  rate: {
+    type: DataTypes.INTEGER,
+  },
+  customerId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
 });
 

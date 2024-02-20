@@ -5,35 +5,56 @@ const Users = db.define("users", {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
+    unique: true,
   },
-  fullName: {
+  avatar: {
     type: DataTypes.STRING,
+  },
+  firstname: {
+    type: DataTypes.STRING(50),
     allowNull: false,
-    validate: {
-      len: [3, 255],
-    },
+  },
+  lastname: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
   },
   email: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(50),
     unique: true,
     allowNull: false,
-    validate: {
-      len: [8, 255],
-      isEmail: true,
-    },
   },
-  gender: {
-    type: DataTypes.STRING,
+  password: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
   },
-  dateOfBirth: {
-    type: DataTypes.DATEONLY,
+  validEmail: {
+    type: DataTypes.BOOLEAN,
   },
-  countryCode: {
-    type: DataTypes.VARCHAR,
+  role: {
+    type: DataTypes.ENUM("admin", "user"),
+  },
+  decription: {
+    type: DataTypes.STRING(100),
+    allowNull: false,
+  },
+  nickName: {
+    type: DataTypes.STRING(10),
+  },
+  degree: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+  },
+  country: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
   },
   createdAt: {
     type: DataTypes.DATEONLY,
-    defaultValue: sequelize.NOW,
+    defaultValue: DataTypes.NOW,
+  },
+  updateAt: {
+    type: DataTypes.DATEONLY,
+    defaultValue: DataTypes.NOW,
   },
 });
 
