@@ -1,5 +1,5 @@
 import transporter from "./mailer.js";
-import Jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import ejs from "ejs";
 import path from "path";
 import getImages from "./getImages.js";
@@ -22,7 +22,7 @@ const getTemplate = async (templatePath, templateVar) => {
 };
 //  Envio de un mensaje con una imagen adjunta
 const sendWelcomeEmail = async (email, data) => {
-  const token = Jwt.sign({ email }, process.env.JWT_EMAIL_SECRET, {
+  const token = jwt.sign({ email }, process.env.JWT_EMAIL_SECRET, {
     expiresIn: "3d",
     algorithm: "HS512",
   });
