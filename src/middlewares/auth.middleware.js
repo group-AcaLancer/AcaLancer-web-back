@@ -1,17 +1,24 @@
-import passport from "passport";
-import { Strategy, ExtractJwt } from "passport-jwt";
+import jwt from "jsonwebtoken";
+import "dotenv/config";
 
-const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "acalancer",
+const authenticate = (req, res, next) => {
+  try {
+    const authorization = req.headers.authorization;
+
+    if (!authorization) {
+      throw {
+        status: 401,
+        message: "No authorization token",
+      };
+    }
+    const token = authorization.split(" ")[1];
+    const user = jwt.verify(token, process.env.JWT_SECRET, {
+      algorithms: "HS512",
+    });
+    req.user = user;
+  } catch (error) {
+    next(error);
+  }
 };
 
-passport.use(
-  new Strategy(options, (payload, done) => {
-    // Aquí lógica para verificaciones
-    // Por ejemplo:
-    // User.findById(payload.id)
-    //   .then(user => done(null, user))
-    //   .catch(err => done(err, false));
-  })
-);
+export default authenticate;
