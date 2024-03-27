@@ -7,7 +7,7 @@ const getAllUsers = async (req, res, next) => {
   try {
     const users = await Users.findAll({
       attributes: {
-        // exclude: ["password"],
+        exclude: ["password"],
       },
     });
     res.json(users);
