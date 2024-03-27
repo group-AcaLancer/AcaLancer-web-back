@@ -2,6 +2,8 @@ import Express from "express";
 import cors from "cors";
 import db from "./utils/database.js";
 import initModels from "./models/initModels.js";
+import apiv1Routes from "./routes/apiv1.routes.js";
+import errorRoutes from "./routes/error.routes.js";
 import "dotenv/config";
 
 initModels();
@@ -23,6 +25,9 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send("Ok");
 });
+
+apiv1Routes(app);
+errorRoutes(app);
 
 app.listen((PORT), () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
